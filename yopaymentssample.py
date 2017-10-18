@@ -17,7 +17,7 @@ def submit_request(xml):
     return conn.text
 
 
-# Function generate_deposit_Xml generates required XML for acdepositfunds request
+# Function generate_deposit_xml generates required XML for acdepositfunds request
 def generate_deposit_xml(amount, msisdn, narrative, external_ref):
     global api_username, api_password
     xml = "<?xml version='1.0' encoding='UTF-8' ?>"
