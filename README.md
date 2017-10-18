@@ -13,10 +13,19 @@ To use the API, you must, first of all, have a Yo! Payments Business Account. Th
 * Yo! Payments api_username
 * Yo! Payments api_password
 
+Import the module
+
 ```
 import yopayments
+```
+
+Use the module as shown below
+
+```
 YoPay = yopayments.YoPay("yo_api_username", "yo_api_password")
+
 response = YoPay.ac_deposit_funds("256712345678",500,"reason for payment")
+
 if response.get("TransactionStatus") == "SUCCEEDED":
 	# Payment was successful
 else:
