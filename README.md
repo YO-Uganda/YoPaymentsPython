@@ -1,8 +1,8 @@
-# Yo! Payments API Python Library
+# Yo! Payments API Python Module
 
 Yo! Payments is a revolutionary mobile payments gateway service. Yo! Payments enables businesses to receive payments from their customers via mobile money, as well as make mobile money payments to any mobile money account holder. Yo! Payments also has the capability to send mobile calling credit ("airtime") directly to users.
 
-Yo! Payments Python Library is a Python library that can be included in your Python project to enable seamless integration with your Python application.
+Yo! Payments Python Module is a Python module that can be included in your Python project to enable seamless integration with your Python application.
 
 ## Getting Started
 
@@ -14,17 +14,15 @@ To use the API, you must, first of all, have a Yo! Payments Business Account. Th
 * Yo! Payments api_password
 
 ```
-yoAPI = YoPay(yo_api_username, yo_api_password)
+import yopayments
+YoPay = yopayments.YoPay("yo_api_username", "yo_api_password")
+response = YoPay.ac_deposit_funds("256712345678",500,"reason for payment")
+if response.get("TransactionStatus") == "SUCCEEDED":
+	# Payment was successful
+else:
+	# Payment failed
 ```
 
-
-Initialize the library
-
-```
-yoAPI = YoPay(yo_api_username, yo_api_password)
-```
-
-And that's it! You now have access to the library functions and can make mobile money payments programmatically!
 
 ## Built With
 
