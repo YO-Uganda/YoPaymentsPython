@@ -28,7 +28,7 @@ And that's it! You now have access to the library functions and can make mobile 
 
 ## Built With
 
- * [Python](https://www.python.org/)Python - Python Programming Language
+ * [Python](https://www.python.org/) - Python Programming Language
 
 ## Authors
 
