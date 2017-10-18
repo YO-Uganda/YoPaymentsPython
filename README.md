@@ -24,7 +24,7 @@ Initialize the library
 yoAPI = YoPay(yo_api_username, yo_api_password)
 ```
 
-And that's it! You now have access to the library functions and can make mobile money payments programatically!
+And that's it! You now have access to the library functions and can make mobile money payments programmatically!
 
 ## Built With
 
