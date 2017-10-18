@@ -105,6 +105,69 @@ class YoPay:
 
         return response_object
 
+    def ac_transaction_check_status(self, transaction_reference, private_transaction=None):
+        xml = '<?xml version="1.0" encoding="UTF-8" ?>'
+        xml += "<AutoCreate>"
+        xml += "<Request>"
+        xml += "<APIUsername>" + self.username + "</APIUsername>"
+        xml += "<APIPassword>" + self.password + "</APIPassword>"
+        xml += "<Method>actransactioncheckstatus</Method>"
+        if transaction_reference is not None:
+            xml += "<TransactionReference>" + transaction_reference + "</TransactionReference>"
+        if private_transaction is not None:
+            xml += "<PrivateTransactionReference>" + private_transaction + "</PrivateTransactionReference>"
+        xml += "</Request>"
+        xml += "</AutoCreate>"
+
+        response = self.__get_xml_response(xml)
+        result = parseString(response)
+
+        Status = self.__get_text(result.getElementsByTagName("Status")[0].childNodes)
+        StatusCode = self.__get_text(result.getElementsByTagName("StatusCode")[0].childNodes)
+
+        StatusMessage = None
+        if len(result.getElementsByTagName("StatusMessage")) > 0:
+            StatusMessage = self.__get_text(result.getElementsByTagName("StatusMessage")[0].childNodes)
+
+        TransactionStatus = None
+        if len(result.getElementsByTagName("TransactionStatus")) > 0:
+            TransactionStatus = self.__get_text(result.getElementsByTagName("TransactionStatus")[0].childNodes)
+
+        ErrorMessageCode = None
+        if len(result.getElementsByTagName("ErrorMessageCode")) > 0:
+            ErrorMessageCode = self.__get_text(result.getElementsByTagName("ErrorMessageCode")[0].childNodes)
+
+        ErrorMessage = None
+        if len(result.getElementsByTagName("ErrorMessage")) > 0:
+            ErrorMessage = self.__get_text(result.getElementsByTagName("ErrorMessage")[0].childNodes)
+
+        TransactionReference = None
+        if len(result.getElementsByTagName("TransactionReference")) > 0:
+            TransactionReference = self.__get_text(result.getElementsByTagName("TransactionReference")[0].childNodes)
+
+        MNOTransactionReferenceId = None
+        if len(result.getElementsByTagName("MNOTransactionReferenceId")) > 0:
+            MNOTransactionReferenceId = self.__get_text(
+                result.getElementsByTagName("MNOTransactionReferenceId")[0].childNodes)
+
+        IssuedReceiptNumber = None
+        if len(result.getElementsByTagName("IssuedReceiptNumber")) > 0:
+            IssuedReceiptNumber = self.__get_text(result.getElementsByTagName("IssuedReceiptNumber")[0].childNodes)
+
+        response_object = {
+            "Status": Status,
+            "StatusCode": StatusCode,
+            "StatusMessage": StatusMessage,
+            "ErrorMessage": ErrorMessage,
+            "ErrorMessageCode": ErrorMessageCode,
+            "TransactionReference": TransactionReference,
+            "TransactionStatus": TransactionStatus,
+            "MNOTransactionReferenceId": MNOTransactionReferenceId,
+            "IssuedReceiptNumber": IssuedReceiptNumber
+        }
+
+        return response_object
+
 
     def __get_xml_response(self, xml):
         headers = {"Content-type": "text/xml","Content-transfer-encoding": "text"}
