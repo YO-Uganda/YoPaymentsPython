@@ -1,6 +1,6 @@
 # Yo! Payments API Python Library
 
-Yo! Payments is a revolutionary mobile payments gateway service. Yo! Payments enables businesses to receive payments from their customers via mobile money, as well as make mobile money payments to any mobile money account holder. Yo! Payments also has the capability to send mobile calling credit (“airtime”) directly to users.
+Yo! Payments is a revolutionary mobile payments gateway service. Yo! Payments enables businesses to receive payments from their customers via mobile money, as well as make mobile money payments to any mobile money account holder. Yo! Payments also has the capability to send mobile calling credit ("airtime") directly to users.
 
 Yo! Payments Python Library is a Python library that can be included in your Python project to enable seamless integration with your Python application.
 
