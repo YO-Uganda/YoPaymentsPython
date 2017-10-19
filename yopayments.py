@@ -20,8 +20,8 @@ class YoPay:
     def get_password(self):
         return self.password
 
-    def set_nonblocking(self, nonBlocking):
-        self.nonBlocking = nonBlocking
+    def set_non_blocking(self, non_blocking):
+        self.nonBlocking = non_blocking
 
     def set_url(self, url):
         self.url = url
@@ -60,47 +60,48 @@ class YoPay:
         response = self.__get_xml_response(xml)
         result = parseString(response)
 
-        Status = self.__get_text(result.getElementsByTagName("Status")[0].childNodes)
-        StatusCode = self.__get_text(result.getElementsByTagName("StatusCode")[0].childNodes)
+        status = self.__get_text(result.getElementsByTagName("Status")[0].childNodes)
+        status_code = self.__get_text(result.getElementsByTagName("StatusCode")[0].childNodes)
 
-        StatusMessage = None
+        status_message = None
         if len(result.getElementsByTagName("StatusMessage")) > 0:
-            StatusMessage = self.__get_text(result.getElementsByTagName("StatusMessage")[0].childNodes)
+            status_message = self.__get_text(result.getElementsByTagName("StatusMessage")[0].childNodes)
 
-        TransactionStatus = None
+        transaction_status = None
         if len(result.getElementsByTagName("TransactionStatus")) > 0:
-            TransactionStatus = self.__get_text(result.getElementsByTagName("TransactionStatus")[0].childNodes)
+            transaction_status = self.__get_text(result.getElementsByTagName("TransactionStatus")[0].childNodes)
 
-        ErrorMessageCode = None
+        error_message_code = None
         if len(result.getElementsByTagName("ErrorMessageCode")) > 0:
-            ErrorMessageCode = self.__get_text(result.getElementsByTagName("ErrorMessageCode")[0].childNodes)
+            error_message_code = self.__get_text(result.getElementsByTagName("ErrorMessageCode")[0].childNodes)
 
-        ErrorMessage = None
+        error_message = None
         if len(result.getElementsByTagName("ErrorMessage")) > 0:
-            ErrorMessage = self.__get_text(result.getElementsByTagName("ErrorMessage")[0].childNodes)
+            error_message = self.__get_text(result.getElementsByTagName("ErrorMessage")[0].childNodes)
 
-        TransactionReference = None
+        transaction_reference = None
         if len(result.getElementsByTagName("TransactionReference")) > 0:
-            TransactionReference = self.__get_text(result.getElementsByTagName("TransactionReference")[0].childNodes)
+            transaction_reference = self.__get_text(result.getElementsByTagName("TransactionReference")[0].childNodes)
 
-        MNOTransactionReferenceId = None
+        mnotransaction_reference_id = None
         if len(result.getElementsByTagName("MNOTransactionReferenceId")) > 0:
-            MNOTransactionReferenceId = self.__get_text(result.getElementsByTagName("MNOTransactionReferenceId")[0].childNodes)
+            mnotransaction_reference_id = self.__get_text(
+                result.getElementsByTagName("MNOTransactionReferenceId")[0].childNodes)
 
-        IssuedReceiptNumber = None
+        issued_receipt_number = None
         if len(result.getElementsByTagName("IssuedReceiptNumber")) > 0:
-            IssuedReceiptNumber = self.__get_text(result.getElementsByTagName("IssuedReceiptNumber")[0].childNodes)
+            issued_receipt_number = self.__get_text(result.getElementsByTagName("IssuedReceiptNumber")[0].childNodes)
 
         response_object = {
-            "Status": Status,
-            "StatusCode": StatusCode,
-            "StatusMessage": StatusMessage,
-            "ErrorMessage": ErrorMessage,
-            "ErrorMessageCode": ErrorMessageCode,
-            "TransactionReference": TransactionReference,
-            "TransactionStatus": TransactionStatus,
-            "MNOTransactionReferenceId": MNOTransactionReferenceId,
-            "IssuedReceiptNumber": IssuedReceiptNumber
+            "Status": status,
+            "StatusCode": status_code,
+            "StatusMessage": status_message,
+            "ErrorMessage": error_message,
+            "ErrorMessageCode": error_message_code,
+            "TransactionReference": transaction_reference,
+            "TransactionStatus": transaction_status,
+            "MNOTransactionReferenceId": mnotransaction_reference_id,
+            "IssuedReceiptNumber": issued_receipt_number
         }
 
         return response_object
@@ -122,55 +123,67 @@ class YoPay:
         response = self.__get_xml_response(xml)
         result = parseString(response)
 
-        Status = self.__get_text(result.getElementsByTagName("Status")[0].childNodes)
-        StatusCode = self.__get_text(result.getElementsByTagName("StatusCode")[0].childNodes)
-
-        StatusMessage = None
-        if len(result.getElementsByTagName("StatusMessage")) > 0:
-            StatusMessage = self.__get_text(result.getElementsByTagName("StatusMessage")[0].childNodes)
-
-        TransactionStatus = None
-        if len(result.getElementsByTagName("TransactionStatus")) > 0:
-            TransactionStatus = self.__get_text(result.getElementsByTagName("TransactionStatus")[0].childNodes)
-
-        ErrorMessageCode = None
+        error_message_code = None
         if len(result.getElementsByTagName("ErrorMessageCode")) > 0:
-            ErrorMessageCode = self.__get_text(result.getElementsByTagName("ErrorMessageCode")[0].childNodes)
+            error_message_code = self.__get_text(
+                result.getElementsByTagName("ErrorMessageCode")[0].childNodes)
 
-        ErrorMessage = None
+        error_message = None
         if len(result.getElementsByTagName("ErrorMessage")) > 0:
-            ErrorMessage = self.__get_text(result.getElementsByTagName("ErrorMessage")[0].childNodes)
+            error_message = self.__get_text(result.getElementsByTagName("ErrorMessage")[0].childNodes)
 
-        TransactionReference = None
+        transaction_reference = None
         if len(result.getElementsByTagName("TransactionReference")) > 0:
-            TransactionReference = self.__get_text(result.getElementsByTagName("TransactionReference")[0].childNodes)
+            transaction_reference = self.__get_text(
+                result.getElementsByTagName("TransactionReference")[0].childNodes)
 
-        MNOTransactionReferenceId = None
+        mnotransaction_reference_id = None
         if len(result.getElementsByTagName("MNOTransactionReferenceId")) > 0:
-            MNOTransactionReferenceId = self.__get_text(
+            mnotransaction_reference_id = self.__get_text(
                 result.getElementsByTagName("MNOTransactionReferenceId")[0].childNodes)
 
-        IssuedReceiptNumber = None
+        amount = None
+        if len(result.getElementsByTagName("Amount")) > 0:
+            amount = self.__get_text(result.getElementsByTagName("Amount")[0].childNodes)
+
+        amount_formatted = None
+        if len(result.getElementsByTagName("AmountFormatted")) > 0:
+            amount_formatted = self.__get_text(result.getElementsByTagName("AmountFormatted")[0].childNodes)
+
+        currency_code = None
+        if len(result.getElementsByTagName("CurrencyCode")) > 0:
+            currency_code = self.__get_text(result.getElementsByTagName("CurrencyCode")[0].childNodes)
+
+        transaction_init_date = None
+        if len(result.getElementsByTagName("TransactionInitialDate")) > 0:
+            transaction_init_date = self.__get_text(result.getElementsByTagName("TransactionInitialDate")[0].childNodes)
+
+        transaction_comp_date = None
+        if len(result.getElementsByTagName("TransactionCompletionDate")) > 0:
+            transaction_comp_date = self.__get_text(
+                result.getElementsByTagName("TransactionCompletionDate")[0].childNodes)
+
+        issued_receipt_number = None
         if len(result.getElementsByTagName("IssuedReceiptNumber")) > 0:
-            IssuedReceiptNumber = self.__get_text(result.getElementsByTagName("IssuedReceiptNumber")[0].childNodes)
+            issued_receipt_number = self.__get_text(result.getElementsByTagName("IssuedReceiptNumber")[0].childNodes)
 
         response_object = {
-            "Status": Status,
-            "StatusCode": StatusCode,
-            "StatusMessage": StatusMessage,
-            "ErrorMessage": ErrorMessage,
-            "ErrorMessageCode": ErrorMessageCode,
-            "TransactionReference": TransactionReference,
-            "TransactionStatus": TransactionStatus,
-            "MNOTransactionReferenceId": MNOTransactionReferenceId,
-            "IssuedReceiptNumber": IssuedReceiptNumber
+            "ErrorMessageCode": error_message_code,
+            "ErrorMessage": error_message,
+            "TransactionReference": transaction_reference,
+            "MNOTransactionReferenceId": mnotransaction_reference_id,
+            "Amount": amount,
+            "AmountFormatted": amount_formatted,
+            "CurrencyCode": currency_code,
+            "TransactionInitialDate": transaction_init_date,
+            "TransactionCompletionDate": transaction_comp_date,
+            "IssuedReceiptNumber": issued_receipt_number
         }
 
         return response_object
 
-
     def __get_xml_response(self, xml):
-        headers = {"Content-type": "text/xml","Content-transfer-encoding": "text"}
+        headers = {"Content-type": "text/xml", "Content-transfer-encoding": "text"}
         conn = requests.post(self.url, data=xml, headers=headers)
         return conn.text
 
