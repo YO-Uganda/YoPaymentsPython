@@ -4,42 +4,153 @@ from xml.dom.minidom import parseString
 
 
 class YoPay:
+    # The External Reference variable
+    # Optional:
+    # An External Reference is something which yourself and the beneficiary agree upon
+    # e.g. an invoice number
+    # Default: None
+
     external_reference = None
+
+    # The Internal Reference variable
+    # Optional:
+    # An Internal Reference is a reference code related to another Yo! Payments system transaction
+    # If you are unsure about the meaning of this field, leave it as None
+    # Default: None
+
     internal_reference = None
+
+    # The Instant Payment Notification URL variable
+    # Optional:
+    # A valid URL which is notified as soon as funds are successfully deposited into your account.
+    # A payment notification will be sent to this URL.
+    # It must be properly URL encoded.
+    # e.g. http://ipnurl?key1=This+value+has+encoded+white+spaces&key2=value
+    # Any special XML Characters must be escaped or your request will fail
+    # e.g. http://ipnurl?key1=This+value+has+encoded+white+spaces&amp;key2=value
+    # Default: None
+
     instant_payment_notification_url = None
+
+    # The Instant Failure Notification URL variable
+    # Optional:
+    # A valid URL which is notified as soon as your deposit request fails
+    # A failure notification will be sent to this URL.
+    # It must be properly URL encoded.
+    # e.g. http://failureurl?key1=This+value+has+encoded+white+spaces&key2=value
+    # Any special XML Characters must be escaped or your request will fail
+    # e.g. http://failureurl?key1=This+value+has+encoded+white+spaces&amp;key2=value
+    # Default: None
+
     instant_failure_notification_url = None
+
+    # The Non Blocking Request variable
+    # Optional:
+    # Whether the connection to the Yo! Payments Gateway is maintained until your request is
+    # fulfilled. "FALSE" maintains the connection till the request is complete.
+    # Default: "FALSE"
+    # Options: "FALSE", "TRUE".
+
     nonBlocking = False
-    url = url = "https://paymentsapi1.yo.co.ug/ybs/task.php"
+
+    #
+    # The Yo Payments API URL
+    # Required:
+    # Default: "https://paymentsapi1.yo.co.ug/ybs/task.php"
+    # Options:
+    # * "https://paymentsapi1.yo.co.ug/ybs/task.php",
+    # * "https://paymentsapi2.yo.co.ug/ybs/task.php",
+    # * "https://41.220.12.206/services/yopaymentsdev/task.php" For Sandbox tests
+
+    url = "https://paymentsapi1.yo.co.ug/ybs/task.php"
 
     def __init__(self, username, password):
+        """
+
+        :param username: username
+        :type username:
+        :param password: password
+        :type password:
+        """
         self.username = username
         self.password = password
 
     def get_username(self):
+        """
+
+        :return: returns the username
+        :rtype: str
+        """
         return self.username
 
     def get_password(self):
+        """
+
+        :return: returns the password
+        :rtype:
+        """
         return self.password
 
     def set_non_blocking(self, non_blocking):
+        """
+
+        :param non_blocking:
+        :type non_blocking:
+        """
         self.nonBlocking = non_blocking
 
     def set_url(self, url):
+        """
+
+        :param url: yoURL, The URL to submit API requests to
+        :type url:
+        """
         self.url = url
 
     def set_external_reference(self, external_reference):
+        """
+
+        :param external_reference: external_reference Used when submitting payment requests
+        :type external_reference:
+        """
         self.external_reference = external_reference
 
     def set_internal_reference(self, internal_reference):
+        """
+
+        :param internal_reference: internal_reference Used when submitting payment requests
+        :type internal_reference:
+        """
         self.internal_reference = internal_reference
 
     def set_instant_payment_notification_url(self, instant_payment_notification_url):
+        """
+
+        :param instant_payment_notification_url: instant_notification_url Useful for nonblocking requests
+        :type instant_payment_notification_url:
+        """
         self.instant_payment_notification_url = instant_payment_notification_url
 
     def set_instant_failure_notification_url(self, instant_failure_notification_url):
+        """
+
+        :param instant_failure_notification_url: failure_notification_url Useful for nonblocking requests
+        :type instant_failure_notification_url:
+        """
         self.instant_failure_notification_url = instant_failure_notification_url
 
     def ac_deposit_funds(self, msisdn, amount, narrative):
+        """
+
+        :param msisdn: msisdn, the mobile money phone number in the format 256772123456
+        :type msisdn:
+        :param amount: amount, the amount of money to deposit into your account (floats are supported)
+        :type amount:
+        :param narrative: narrative, the reason for the mobile money user to deposit funds
+        :type narrative:
+        :return:
+        :rtype:
+        """
         xml = '<?xml version="1.0" encoding="UTF-8" ?>'
         xml += "<AutoCreate>"
         xml += "<Request>"
@@ -134,6 +245,17 @@ class YoPay:
         return response_object
 
     def ac_transaction_check_status(self, transaction_reference, private_transaction=None):
+        """
+
+        :param transaction_reference: transaction_reference, the response from the Yo! Payments
+        Gateway that uniquely identifies the transaction whose status you are checking
+        :type transaction_reference:
+        :param private_transaction: private_transaction_reference, The External Reference
+        that was used to carry out a transaction
+        :type private_transaction:
+        :return:
+        :rtype:
+        """
         xml = '<?xml version="1.0" encoding="UTF-8" ?>'
         xml += "<AutoCreate>"
         xml += "<Request>"
@@ -210,11 +332,25 @@ class YoPay:
         return response_object
 
     def __get_xml_response(self, xml):
+        """
+
+        :param xml:
+        :type xml:
+        :return:
+        :rtype:
+        """
         headers = {"Content-type": "text/xml", "Content-transfer-encoding": "text"}
         conn = requests.post(self.url, data=xml, headers=headers)
         return conn.text
 
     def __get_text(self, nodelist):
+        """
+
+        :param nodelist:
+        :type nodelist:
+        :return:
+        :rtype:
+        """
         rc = []
         for node in nodelist:
             if node.nodeType == node.TEXT_NODE:
