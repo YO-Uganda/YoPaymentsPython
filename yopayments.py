@@ -1,4 +1,5 @@
 import requests
+from xml.etree import ElementTree
 from xml.dom.minidom import parseString
 
 
@@ -57,6 +58,32 @@ class YoPay:
         xml += "</Request>"
         xml += "</AutoCreate>"
 
+        xmlObject = ElementTree.Element("AutoCreate")
+        requestObject = ElementTree.SubElement(xmlObject, "Request")
+
+        ElementTree.SubElement(requestObject, "APIUsername").text = self.username
+
+        ElementTree.SubElement(requestObject, "APIPassword").text = self.password
+
+        ElementTree.SubElement(requestObject, "Method").text = "acdepositfunds"
+
+
+        if self.nonBlocking:
+            ElementTree.SubElement(requestObject, "NonBlocking").text = "TRUE"
+        else:
+            ElementTree.SubElement(requestObject, "NonBlocking").text = "FALSE"
+
+        ElementTree.SubElement(requestObject, "Amount").text = str(amount)
+
+        ElementTree.SubElement(requestObject, "Account").text = msisdn
+
+        ElementTree.SubElement(requestObject, "Narrative").text = narrative
+
+        if self.external_reference is not None:
+            ElementTree.SubElement(requestObject, "ExternalReference").text = self.external_reference
+
+        print(ElementTree.tostring(xmlObject))
+        print(xml)
         response = self.__get_xml_response(xml)
         result = parseString(response)
 
