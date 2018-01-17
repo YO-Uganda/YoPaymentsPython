@@ -19,6 +19,16 @@ class YoPay:
 
     internal_reference = None
 
+    # The Provider Reference Text variable
+    # A text you wish to be presented in any confirmation message which the mobile money provider
+    # network sends to the subscriber upon successful completion of the transaction.
+    # Some mobile money providers automatically send a confirmatory text message to the subscriber
+    # upon completion of transactions. This parameter allows you to provide some text which will
+    # be appended to any such confirmatory message sent to the subscriber.
+    # Default: None
+
+    provider_reference_text = None
+
     # The Instant Payment Notification URL variable
     # Optional:
     # A valid URL which is notified as soon as funds are successfully deposited into your account.
@@ -329,3 +339,86 @@ class YoPay:
             if node.nodeType == node.TEXT_NODE:
                 rc.append(node.data)
         return ''.join(rc)
+
+    def ac_internal_transfer(self, currency_code, amount, beneficiary_account, beneficiary_email, narrative):
+        """
+
+        :param currency_code: MTN Mobile Money, MTN Airtime, Warid Airtime, Orange Airtime, Airtel Airtime
+        :type currency_code: Uganda Shillings
+        :param amount: The amount to be transferred
+        :type amount:
+        :param beneficiary_account: Account number of Yo! Payments User
+        :type beneficiary_account:
+        :param beneficiary_email: Email Address of the recipient of funds
+        :type beneficiary_email:
+        :param narrative: Textual narrative about the transaction
+        :type narrative:
+        """
+        xml = '<?xml version="1.0" encoding="UTF-8" ?>'
+        xml += "<AutoCreate>"
+        xml += "<Request>"
+        xml += "<APIUsername>" + self.username + "</APIUsername>"
+        xml += "<APIPassword>" + self.password + "</APIPassword>"
+        xml += "<Method>acinternaltransfer</Method>"
+        xml += "<CurrencyCode>" + currency_code + "</CurrencyCode>"
+        xml += "<Amount>" + amount + "</Amount>"
+        xml += "<BeneficiaryAccount>" + beneficiary_account + "</BeneficiaryAccount>"
+        xml += "<BeneficiaryEmail>" + beneficiary_email + "</BeneficiaryEmail>"
+        xml += "<Narrative>" + narrative + "</Narrative>"
+
+        if self.internal_reference is not None:
+            xml += "<InternalReference>" + self.internal_reference + "</InternalReference>"
+
+        if self.external_reference is not None:
+            xml += "<ExternalReference>" + self.external_reference + "</ExternalReference>"
+        xml += "</Request>"
+        xml += "</AutoCreate>"
+
+        response = self.__get_xml_response(xml)
+        result = parseString(response)
+
+        status = self.__get_text(result.getElementsByTagName("Status")[0].childNodes)
+        status_code = self.__get_text(result.getElementsByTagName("StatusCode")[0].childNodes)
+
+        status_message = None
+        if len(result.getElementsByTagName("StatusMessage")) > 0:
+            status_message = self.__get_text(result.getElementsByTagName("StatusMessage")[0].childNodes)
+
+        transaction_status = None
+        if len(result.getElementsByTagName("TransactionStatus")) > 0:
+            transaction_status = self.__get_text(result.getElementsByTagName("TransactionStatus")[0].childNodes)
+
+        error_message_code = None
+        if len(result.getElementsByTagName("ErrorMessageCode")) > 0:
+            error_message_code = self.__get_text(result.getElementsByTagName("ErrorMessageCode")[0].childNodes)
+
+        error_message = None
+        if len(result.getElementsByTagName("ErrorMessage")) > 0:
+            error_message = self.__get_text(result.getElementsByTagName("ErrorMessage")[0].childNodes)
+
+        transaction_reference = None
+        if len(result.getElementsByTagName("TransactionReference")) > 0:
+            transaction_reference = self.__get_text(result.getElementsByTagName("TransactionReference")[0].childNodes)
+
+        mnotransaction_reference_id = None
+        if len(result.getElementsByTagName("MNOTransactionReferenceId")) > 0:
+            mnotransaction_reference_id = self.__get_text(
+                result.getElementsByTagName("MNOTransactionReferenceId")[0].childNodes)
+
+        issued_receipt_number = None
+        if len(result.getElementsByTagName("IssuedReceiptNumber")) > 0:
+            issued_receipt_number = self.__get_text(result.getElementsByTagName("IssuedReceiptNumber")[0].childNodes)
+
+        response_object = {
+            "Status": status,
+            "StatusCode": status_code,
+            "StatusMessage": status_message,
+            "ErrorMessage": error_message,
+            "ErrorMessageCode": error_message_code,
+            "TransactionReference": transaction_reference,
+            "TransactionStatus": transaction_status,
+            "MNOTransactionReferenceId": mnotransaction_reference_id,
+            "IssuedReceiptNumber": issued_receipt_number
+        }
+
+        return response_object
