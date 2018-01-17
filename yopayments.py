@@ -473,7 +473,7 @@ class YoPay:
             xml += "<ExternalReference>" + self.external_reference + "</ExternalReference>"
 
         if self.provider_reference_text is not None:
-            xml += '<ProviderReferenceText>' + self.provider_reference_text + '</ProviderReferenceText>';
+            xml += '<ProviderReferenceText>' + self.provider_reference_text + '</ProviderReferenceText>'
         xml += "</Request>"
         xml += "</AutoCreate>"
 
