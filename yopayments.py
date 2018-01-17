@@ -96,7 +96,7 @@ class YoPay:
         """
 
         :return: returns the password
-        :rtype:
+        :rtype: str
         """
         return self.password
 
@@ -114,7 +114,7 @@ class YoPay:
         Set the YO URL
 
         :param url: yoURL, The URL to submit API requests to
-        :type url:
+        :type url: str
         """
         self.url = url
 
