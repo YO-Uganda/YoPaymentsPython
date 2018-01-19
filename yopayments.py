@@ -329,32 +329,6 @@ class YoPay:
 
         return response_object
 
-    def __get_xml_response(self, xml):
-        """
-
-        :param xml:
-        :type xml:
-        :return:
-        :rtype:
-        """
-        headers = {"Content-type": "text/xml", "Content-transfer-encoding": "text"}
-        conn = requests.post(self.url, data=xml, headers=headers)
-        return conn.text
-
-    def __get_text(self, nodelist):
-        """
-
-        :param nodelist:
-        :type nodelist:
-        :return:
-        :rtype:
-        """
-        rc = []
-        for node in nodelist:
-            if node.nodeType == node.TEXT_NODE:
-                rc.append(node.data)
-        return ''.join(rc)
-
     def ac_internal_transfer(self, currency_code, amount, beneficiary_account, beneficiary_email, narrative):
         """
         Transfer funds from your Payment Account to another Yo! Payments Account
@@ -525,3 +499,77 @@ class YoPay:
         }
 
         return response_object
+
+    def ac_acct_balance(self):
+        """
+        Get the current balance of your Yo! Payments Account
+        Returned array contains an array of balances (including airtime)
+        """
+        xml = '<?xml version="1.0" encoding="UTF-8" ?>'
+        xml += "<AutoCreate>"
+        xml += "<Request>"
+        xml += "<APIUsername>" + self.username + "</APIUsername>"
+        xml += "<APIPassword>" + self.password + "</APIPassword>"
+        xml += "<Method>acacctbalance</Method>"
+        xml += "</Request>"
+        xml += "</AutoCreate>"
+
+        response = self.__get_xml_response(xml)
+        result = parseString(response)
+
+        status = self.__get_text(result.getElementsByTagName("Status")[0].childNodes)
+        status_code = self.__get_text(result.getElementsByTagName("StatusCode")[0].childNodes)
+
+        balances_response = {}
+        for i in range(0, len(result.getElementsByTagName("Currency"))):
+            balances_response[self.__get_text(result.getElementsByTagName("Code")[i].childNodes)] = self.__get_text(
+                result.getElementsByTagName("Balance")[i + 1].childNodes)
+
+        status_message = None
+        if len(result.getElementsByTagName("StatusMessage")) > 0:
+            status_message = self.__get_text(result.getElementsByTagName("StatusMessage")[0].childNodes)
+
+        error_message = None
+        if len(result.getElementsByTagName("ErrorMessage")) > 0:
+            error_message = self.__get_text(result.getElementsByTagName("ErrorMessage")[0].childNodes)
+
+        error_message_code = None
+        if len(result.getElementsByTagName("ErrorMessageCode")) > 0:
+            error_message_code = self.__get_text(result.getElementsByTagName("ErrorMessageCode")[0].childNodes)
+
+        response_object = {
+            "Status": status,
+            "StatusCode": status_code,
+            "StatusMessage": status_message,
+            "ErrorMessage": error_message,
+            "ErrorMessageCode": error_message_code,
+            "balances": balances_response
+        }
+
+        return response_object
+
+    def __get_xml_response(self, xml):
+        """
+
+        :param xml:
+        :type xml:
+        :return:
+        :rtype:
+        """
+        headers = {"Content-type": "text/xml", "Content-transfer-encoding": "text"}
+        conn = requests.post(self.url, data=xml, headers=headers)
+        return conn.text
+
+    def __get_text(self, nodelist):
+        """
+
+        :param nodelist:
+        :type nodelist:
+        :return:
+        :rtype:
+        """
+        rc = []
+        for node in nodelist:
+            if node.nodeType == node.TEXT_NODE:
+                rc.append(node.data)
+        return ''.join(rc)
