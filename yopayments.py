@@ -247,7 +247,7 @@ class YoPay:
 
         :param transaction_reference: The response from the Yo! Payments
         Gateway that uniquely identifies the transaction whose status you are checking
-        :type transaction_reference:
+        :type transaction_reference: str
         :param private_transaction: private_transaction_reference, The External Reference
         that was used to carry out a transaction
         :type private_transaction:
@@ -336,7 +336,7 @@ class YoPay:
         :param currency_code: MTN Mobile Money, MTN Airtime, Warid Airtime, Orange Airtime, Airtel Airtime
         :type currency_code: Uganda Shillings
         :param amount: The amount to be transferred
-        :type amount:
+        :type amount: str
         :param beneficiary_account: Account number of Yo! Payments User
         :type beneficiary_account:
         :param beneficiary_email: Email Address of the recipient of funds
@@ -423,11 +423,11 @@ class YoPay:
         This request requires permission that is granted by the issuance of an API Access Letter
 
         :param msisdn: The mobile money phone number in the format 256772123456
-        :type msisdn:
+        :type msisdn: str
         :param amount: The amount of money to withdraw from your account (floats are supported)
-        :type amount:
+        :type amount: str
         :param narrative: The reason for withdrawal of funds from your account
-        :type narrative:
+        :type narrative: str
         """
         xml = '<?xml version="1.0" encoding="UTF-8" ?>'
         xml += "<AutoCreate>"
