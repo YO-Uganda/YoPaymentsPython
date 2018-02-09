@@ -62,6 +62,12 @@ class YoPay:
 
     nonBlocking = False
 
+    # The Authentication Signature Base64 variable
+    # Optional.
+    # It may be required to authenticate certain deposit requests.
+
+    authentication_signature_base64 = None
+
     # The Yo Payments API URL
     # Required:
     # Default: "https://paymentsapi1.yo.co.ug/ybs/task.php"
@@ -154,6 +160,23 @@ class YoPay:
         """
         self.instant_failure_notification_url = instant_failure_notification_url
 
+    def set_authentication_signature_base64(self, authentication_signature_base64):
+        """
+        Set the Authentication Signature Base64
+
+        :param authentication_signature_base64 : failure_notification_url Useful for nonblocking requests
+        :type str :
+        """
+        self.authentication_signature_base64 = authentication_signature_base64;
+
+    def get_authentication_signature_base64(self):
+        """
+
+        :return: Returns the Authentication Signature Base64 Variable
+        :rtype: str
+        """
+        return self.authentication_signature_base64;
+
     def ac_deposit_funds(self, msisdn, amount, narrative):
         """
         Request Mobile Money User to deposit funds into your account
@@ -178,24 +201,25 @@ class YoPay:
         xml += "<APIUsername>" + self.username + "</APIUsername>"
         xml += "<APIPassword>" + self.password + "</APIPassword>"
         xml += "<Method>acdepositfunds</Method>"
-        if self.nonBlocking:
-            xml += "<NonBlocking>TRUE</NonBlocking>"
-        else:
-            xml += "<NonBlocking>FALSE</NonBlocking>"
+        xml += "<NonBlocking>TRUE</NonBlocking>" if self.nonBlocking else "<NonBlocking>FALSE</NonBlocking>"
         xml += "<Amount>" + str(amount) + "</Amount>"
         xml += "<Account>" + msisdn + "</Account>"
         xml += "<Narrative>" + narrative + "</Narrative>"
         if self.external_reference is not None:
             xml += "<ExternalReference>" + self.external_reference + "</ExternalReference>"
+        if self.internal_reference is not None:
+            xml += "<InternalReference>" + self.internal_reference + "</InternalReference>"
         if self.instant_payment_notification_url is not None:
-            xml += "<InstantNotificationUrl>" + self.instant_payment_notification_url + "</InstantNotificationUrl>"
+            xml += '<InstantNotificationUrl>' + self.instant_payment_notification_url + '</InstantNotificationUrl>'
         if self.instant_failure_notification_url is not None:
-            xml += "<FailureNotificationUrl>" + self.instant_failure_notification_url + "</FailureNotificationUrl>"
+            xml += '<FailureNotificationUrl>' + self.instant_failure_notification_url + '</FailureNotificationUrl>'
+        if self.authentication_signature_base64:
+            xml += '<AuthenticationSignatureBase64>' + self.authentication_signature_base64 + '</AuthenticationSignatureBase64>'
         xml += "</Request>"
         xml += "</AutoCreate>"
 
         response = self.__get_xml_response(xml)
-        return xmltodict.parse(response)["AutoCreate"]["Response"]
+        return self.__parse_response(response)
 
     def ac_transaction_check_status(self, transaction_reference, private_transaction=None):
         """
@@ -226,7 +250,7 @@ class YoPay:
         xml += "</AutoCreate>"
 
         response = self.__get_xml_response(xml)
-        return xmltodict.parse(response)["AutoCreate"]["Response"]
+        return self.__parse_response(response)
 
     def ac_internal_transfer(self, currency_code, amount, beneficiary_account, beneficiary_email, narrative):
         """
@@ -264,7 +288,7 @@ class YoPay:
         xml += "</AutoCreate>"
 
         response = self.__get_xml_response(xml)
-        return xmltodict.parse(response)["AutoCreate"]["Response"]
+        return self.__parse_response(response)
 
     def ac_withdraw_funds(self, msisdn, amount, narrative):
         """
@@ -305,7 +329,7 @@ class YoPay:
         xml += "</AutoCreate>"
 
         response = self.__get_xml_response(xml)
-        return xmltodict.parse(response)["AutoCreate"]["Response"]
+        return self.__parse_response(response)
 
     def ac_acct_balance(self):
         """
@@ -322,7 +346,7 @@ class YoPay:
         xml += "</AutoCreate>"
 
         response = self.__get_xml_response(xml)
-        return xmltodict.parse(response)["AutoCreate"]["Response"]
+        return self.__parse_response(response)
 
     def __get_xml_response(self, xml):
         """
@@ -349,3 +373,9 @@ class YoPay:
             if node.nodeType == node.TEXT_NODE:
                 rc.append(node.data)
         return ''.join(rc)
+
+    def __parse_response(self, response):
+        try:
+            return xmltodict.parse(response)["AutoCreate"]["Response"]
+        except KeyError:
+            return xmltodict.parse(response)
