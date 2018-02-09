@@ -219,7 +219,6 @@ class YoPay:
         xml += "</AutoCreate>"
 
         response = self.__get_xml_response(xml)
-
         return self.__parse_response(response)
 
     def ac_transaction_check_status(self, transaction_reference, private_transaction=None):
@@ -251,7 +250,6 @@ class YoPay:
         xml += "</AutoCreate>"
 
         response = self.__get_xml_response(xml)
-
         return self.__parse_response(response)
 
     def ac_internal_transfer(self, currency_code, amount, beneficiary_account, beneficiary_email, narrative):
@@ -290,7 +288,6 @@ class YoPay:
         xml += "</AutoCreate>"
 
         response = self.__get_xml_response(xml)
-
         return self.__parse_response(response)
 
     def ac_withdraw_funds(self, msisdn, amount, narrative):
@@ -332,7 +329,6 @@ class YoPay:
         xml += "</AutoCreate>"
 
         response = self.__get_xml_response(xml)
-
         return self.__parse_response(response)
 
     def ac_acct_balance(self):
@@ -350,7 +346,6 @@ class YoPay:
         xml += "</AutoCreate>"
 
         response = self.__get_xml_response(xml)
-
         return self.__parse_response(response)
 
     def __get_xml_response(self, xml):

@@ -54,3 +54,4 @@ This project is licensed under the MIT License - see the LICENSE.md file for det
 * Gerald Begumisa
 * Grace Kyeyune
 * Joseph Tabajjwa
+* Isaac Obella [wizlif](https://github.com/wizlif) for the xmltodict introduction
