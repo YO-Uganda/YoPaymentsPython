@@ -193,8 +193,6 @@ class YoPay:
         if self.external_reference is not None:
             ElementTree.SubElement(requestObject, "ExternalReference").text = self.external_reference
 
-        print(ElementTree.tostring(xmlObject))
-        print(xml)
         response = self.__get_xml_response(xml)
         result = parseString(response)
 
