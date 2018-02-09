@@ -165,9 +165,9 @@ class YoPay:
         Set the Authentication Signature Base64
 
         :param authentication_signature_base64 : failure_notification_url Useful for nonblocking requests
-        :type str :
+        :type
         """
-        self.authentication_signature_base64 = authentication_signature_base64;
+        self.authentication_signature_base64 = authentication_signature_base64
 
     def get_authentication_signature_base64(self):
         """
@@ -175,7 +175,7 @@ class YoPay:
         :return: Returns the Authentication Signature Base64 Variable
         :rtype: str
         """
-        return self.authentication_signature_base64;
+        return self.authentication_signature_base64
 
     def ac_deposit_funds(self, msisdn, amount, narrative):
         """
