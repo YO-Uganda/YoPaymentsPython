@@ -210,11 +210,11 @@ class YoPay:
         if self.internal_reference is not None:
             xml += "<InternalReference>" + self.internal_reference + "</InternalReference>"
         if self.instant_payment_notification_url is not None:
-            xml += '<InstantNotificationUrl>' + self.instant_payment_notification_url + '</InstantNotificationUrl>'
+            xml += "<InstantNotificationUrl>" + self.instant_payment_notification_url + "</InstantNotificationUrl>"
         if self.instant_failure_notification_url is not None:
-            xml += '<FailureNotificationUrl>' + self.instant_failure_notification_url + '</FailureNotificationUrl>'
+            xml += "<FailureNotificationUrl>" + self.instant_failure_notification_url + "</FailureNotificationUrl>"
         if self.authentication_signature_base64:
-            xml += '<AuthenticationSignatureBase64>' + self.authentication_signature_base64 + '</AuthenticationSignatureBase64>'
+            xml += "<AuthenticationSignatureBase64>" + self.authentication_signature_base64 + "</AuthenticationSignatureBase64>"
         xml += "</Request>"
         xml += "</AutoCreate>"
 
@@ -324,7 +324,7 @@ class YoPay:
             xml += "<ExternalReference>" + self.external_reference + "</ExternalReference>"
 
         if self.provider_reference_text is not None:
-            xml += '<ProviderReferenceText>' + self.provider_reference_text + '</ProviderReferenceText>'
+            xml += "<ProviderReferenceText>" + self.provider_reference_text + "</ProviderReferenceText>"
         xml += "</Request>"
         xml += "</AutoCreate>"
 
