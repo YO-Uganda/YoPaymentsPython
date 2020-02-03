@@ -74,7 +74,7 @@ class YoPay:
     # Options:
     # * "https://paymentsapi1.yo.co.ug/ybs/task.php",
     # * "https://paymentsapi2.yo.co.ug/ybs/task.php",
-    # * "https://41.220.12.206/services/yopaymentsdev/task.php" For Sandbox tests
+    # * "https://sandbox.yo.co.ug/services/yopaymentsdev/task.php" For Sandbox tests
 
     url = "https://paymentsapi1.yo.co.ug/ybs/task.php"
 

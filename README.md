@@ -26,7 +26,7 @@ YoPay = yopayments.YoPay("yo_api_username", "yo_api_password")
 
 YoPay.set_nonblocking(True)
 
-response = YoPay.ac_deposit_funds("256712345678",500,"reason for payment")
+response = YoPay.ac_deposit_funds("256712345678", 500, "reason for payment")
 
 if response.get("TransactionStatus") == "SUCCEEDED":
 	# Payment was successful

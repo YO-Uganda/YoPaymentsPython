@@ -12,7 +12,7 @@ api_password = "yo_api_password"
 # Function subm_request makes an HTTP request to Yo! Payments
 def submit_request(xml):
     global api_url
-    headers = {"Content-type": "text/xml"}
+    headers = {"Content-type": "text/xml", "Content-transfer-encoding": "text"}
     conn = requests.post(api_url, xml, headers)
     return conn.text
 
