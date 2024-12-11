@@ -69,7 +69,7 @@ else:
 	# Payment failed
 ```
 
-# To check balance API
+# To Test check balance API
 ```
 YoPay = yopayments.YoPay("yo_api_username", "yo_api_password")
 
