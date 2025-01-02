@@ -1,10 +1,10 @@
 import yopayments
 
-YoPay = yopayments.YoPay("90001454216", "sMUw-dshF-fOku-r0Y7-oCsz-d4Xc-YM5n-RVGH")
-YoPay.set_instant_payment_notification_url("http://192.168.1.30/myWork/hello.php")
+YoPay = yopayments.YoPay("XXXX-api-user-name-XXXX", "XXXX-api-password-XXXX")
+YoPay.set_instant_payment_notification_url("http://yourdomain.net/ipn/endpoint")
 YoPay.set_external_reference("TestWithPython"+YoPay.generate_random())
 YoPay.set_public_key_file("keys/Yo_Uganda_Public_Certificate.crt")
-YoPay.set_private_key_file("C:/Users/DELL/Desktop/learning materials/private_key.pem")
+YoPay.set_private_key_file("path/to/your/private_key.pem")
 
 ##Uncomment function call to test deposits
 def test_deposit():
