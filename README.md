@@ -21,12 +21,77 @@ import yopayments
 
 Use the module as shown below
 
+# To test the deposit of funds API
 ```
 YoPay = yopayments.YoPay("yo_api_username", "yo_api_password")
 
-YoPay.set_nonblocking(True)
-
 response = YoPay.ac_deposit_funds("256712345678", 500, "reason for payment")
+
+if response.get("TransactionStatus") == "SUCCEEDED":
+	# Payment was successful
+else:
+	# Payment failed
+```
+
+# To test withdraw funds API without public Key configured
+```
+YoPay = yopayments.YoPay("yo_api_username", "yo_api_password")
+YoPay.set_external_reference("TestWithPython"+YoPay.generate_random())
+
+response = YoPay.ac_withdraw_funds("256712345678", 500, "reason for payment")
+
+if response.get("TransactionStatus") == "SUCCEEDED":
+	# Payment was successful
+else:
+	# Payment failed
+```
+
+# To test withdraw funds API with public Key configured
+```
+YoPay = yopayments.YoPay("yo_api_username", "yo_api_password")
+YoPay.set_external_reference("TestWithPython"+YoPay.generate_random())
+
+username="yo_api_username"
+account="256789092671"
+amount="2000"
+narrative="Reason for payments"
+external_ref=YoPay.external_reference
+nonce="xGLl39KNTN3467T-"+YoPay.generate_random()
+data=username+amount+account+narrative+external_ref+nonce
+base64_signature=YoPay.generate_public_key_signature(data)
+
+response = YoPay.ac_withdraw_funds(account, amount, narrative,
+		nonce,base64_signature)
+
+if response.get("TransactionStatus") == "SUCCEEDED":
+	# Payment was successful
+else:
+	# Payment failed
+```
+
+# To test check balance API
+```
+YoPay = yopayments.YoPay("yo_api_username", "yo_api_password")
+
+response = YoPay.ac_acct_balance()
+
+if response.get("Status") == "OK":
+    bal=response.get("Balance")['Currency']
+	print("Balances\n...")
+	for b in bal:
+		print(b['Code']+"\t"+b['Balance']+"\n...")
+else:
+	print("There was an error processing the payment..." + response.get("StatusMessage"))
+```
+
+# To test check status API
+```
+YoPay = yopayments.YoPay("yo_api_username", "yo_api_password")
+# you can either use the transacion reference from Yo! or private transaction reference
+transactionReference="JYWLiUwLP3L3ofsTntEjeJkEoheHKyj"
+private_transaction="TestWithPython" # external reference of your deposit or withdraw
+
+response = YoPay.ac_transaction_check_status(transactionReference)
 
 if response.get("TransactionStatus") == "SUCCEEDED":
 	# Payment was successful
